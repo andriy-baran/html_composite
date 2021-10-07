@@ -1,23 +1,32 @@
 module HtmlComposite
   class Tag
     extend HtmlComposite::DSL
-
+    BL=' '.freeze
     def initialize(**attrs, &block)
-      @children = []
-      @attributes = attrs
-      if block_given?
+      @attributes = generate_html_attributes(attrs)
+      if block
+        @children = []
         instance_eval(&block)
         @children << block.call if @children.empty?
       end
+      freeze
     end
 
     def to_s
+      return if Array(@children).empty?
       @children.map(&:to_s).join
     end
 
+    def generate_html_attributes(attrs)
+      return if attrs.empty?
+
+      s = nil
+      attrs.each_pair {|k, v| s = "#{s} #{k}=\"#{v}\"" }
+      s
+    end
+
     def attributes_list
-      return if @attributes.empty?
-      ' ' + @attributes.map { |k,v| '%s="%s"' % [k, v] }.join(' ')
+      @attributes.freeze
     end
 
     def_tag :a

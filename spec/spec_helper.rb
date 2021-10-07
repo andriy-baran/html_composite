@@ -1,4 +1,5 @@
 require "bundler/setup"
+require "pry"
 require "html_composite"
 
 RSpec.configure do |config|
