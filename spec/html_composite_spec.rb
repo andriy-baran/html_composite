@@ -4,6 +4,7 @@ RSpec.describe HtmlComposite do
   end
 
   it "does something useful" do
-    expect(false).to eq(true)
+    list = {a: 1, b: 2}
+    expect(HtmlComposite.fragment { div(**list) { 'my string' } }.to_s).to eq('<div a="1" b="2">my string</div>')
   end
 end
